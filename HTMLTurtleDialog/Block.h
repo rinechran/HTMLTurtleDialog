@@ -1,12 +1,18 @@
 #pragma once
 #include <vector>
-
+//각 help에 나타내주는 상자 크기에 맞춰 개행문자를 넣어줘야합니다. \r\n으로 (추후작업예정)
 struct Block
 {
-
+	
 	void setRect(CRect rect) {
+		//첫번째 블럭
 		mMainBlock = rect;
-
+		//두번쨰 블럭
+		mAddBlock = mMainBlock;
+		mAddBlock.MoveToXY(50,51);//xy좌표 이동 ,파라미터 각각 x,y좌표에 영향줌
+		//마지막 블럭
+		dynamicBlock = mMainBlock;
+		dynamicBlock.MoveToY(102);//y좌표만 이동
 	}
 	int rgb;
 	CString mTag;
@@ -27,12 +33,12 @@ struct DoctypeTag : public Block
 {
 	DoctypeTag()
 	{
-		mTag = L"doctype";
+		mTag = L"Doctype";
 		mStartTag = L"<!DOCTYPE html";
 		mProperty = L"";
 		mContext = "";
 		mEndTag = ">";
-		Help = "";
+		Help = L"정확하게 <!DOCTYPE html> 은 html태그가 아닙니다.\r\n<!DOCTYPE html>는 문서형 정의 및 선언(DTD:Document Type Definition)이며\r\n여러 버전의 html 중 html5임을 나타내는 선언입니다.";
 	}
 };
 
@@ -45,7 +51,7 @@ struct HtmlTag : public Block
 		mProperty = L">";
 		mContext = "";
 		mEndTag = "</html>";
-		Help = "";
+		Help = L"<html>은 브라우저에게 이문서가 HTML문서라는것을 알려줍니다\r\n<html>태그는 다른,모든 html요소를 감쌉니다.";
 	}
 };
 
@@ -58,7 +64,19 @@ struct HeadTag : public Block
 		mProperty = L">";
 		mContext = "";
 		mEndTag = "</head>";
-		Help = "";
+		Help = L"<head>는 모든 헤드 구성요소의 컨테이너입니다\r\n헤드요소는 html 문서의 \r\n<title>,<style>,<base>,<link>,<meta>,<script>,<noscript>\r\n를 포함합니다.";
+	}
+};
+struct TitleTag : public Block
+{
+	TitleTag()
+	{
+		mTag = L"title";
+		mStartTag = L"<title";
+		mProperty = L">";
+		mContext = "";
+		mEndTag = "</title>";
+		Help = L"모든 html문서에서 요구하고 <title>태그는 문서의 제목을 정의합니다\r\n(Ex:www.kpu.ac.kr에 접속하면 '한국산업기술대학교' 로 나타나지것이 title 태그입니다)";
 	}
 };
 struct BodyTag : public Block
@@ -70,14 +88,14 @@ struct BodyTag : public Block
 		mProperty = L">";
 		mContext = "";
 		mEndTag = "</body>";
-		Help = "";
+		Help = L"body태그는 문서의 몸체임을 정의해줍니다.\r\n바디의 요소는 html문서의 모든 내용을 포함합니다.\r\n(Ex:텍스트,하이퍼링크,이미지,표,리스트 등등";
 	}
 };
 struct HTag : public Block
 {
 	HTag(int select)
 	{
-		Help = "한글로 일관된 설명 가능 ex:h태그는 h1,h2,h3,h4,h5순으로 큰 폰트사이즈로 제목을나타내주는 태그이다";
+		Help = L"h태그는 h1,h2,h3,h4,h5,h6 가 있으며 \r\nh1이 가장 굵고 큰사이즈의 폰트로 나타내집니다 \r\n순서대로 폰트가 얇고 작아지고.\r\n주로 제목을 나타낼때 사용합니다.";
 		switch (select)
 		{
 		case 1:
@@ -115,6 +133,13 @@ struct HTag : public Block
 			mContext = "";
 			mEndTag = "</h5>";
 			break;
+		case 6:
+			mTag = L"H6";
+			mStartTag = L"<h6";
+			mProperty = L">";
+			mContext = "";
+			mEndTag = "</h6>";
+			break;
 		default:
 			break;
 		}
@@ -132,7 +157,7 @@ struct DivTag : public Block
 		mProperty = L">";
 		mContext = "";
 		mEndTag = "</div>";
-		Help = "";
+		Help = L"division 의 약자로써\r\n분할 또는 html문서의 부분을 정의합니다\r\n<div>는CSS의서식을 그룹 블럭 요소로 사용됩니다.\r\n(간단히 구역분할,그룹묶기 용도로 사용합니다.)";
 	}
 };
 
@@ -290,4 +315,3 @@ struct TdTag : public Block
 		Help = "";
 	}
 };
-

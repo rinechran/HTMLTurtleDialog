@@ -15,6 +15,8 @@ public:
 		mBlockArr = {
 			new DoctypeTag ,
 			new HtmlTag,
+			new HeadTag,
+			new TitleTag,
 			new BodyTag,
 			new DivTag,
 			new HTag(1),
@@ -22,6 +24,7 @@ public:
 			new HTag(3),
 			new HTag(4),
 			new HTag(5),
+			new HTag(6),
 			new OlTag,
 			new UlTag,
 			new LiTag,
