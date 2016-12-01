@@ -107,6 +107,9 @@ BOOL CHTMLTurtleDialogDlg::OnInitDialog()
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
 
+
+	mainview.initClientSize();
+
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
@@ -149,8 +152,10 @@ void CHTMLTurtleDialogDlg::OnPaint()
 	}
 	else
 	{
-		mainview.initClientSize();
+
 		mainview.OnDrew();
+
+
 		CDialogEx::OnPaint();
 	}
 }

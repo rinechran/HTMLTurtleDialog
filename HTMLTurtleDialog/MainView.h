@@ -73,9 +73,9 @@ public:
 	}
 
 	void initClientSize() {
+
 		mWnd->GetDlgItem(IDC_RUN_ANI)->GetWindowRect(&mClientSize);
 		mWnd->ScreenToClient(&mClientSize);
-
 		std::vector<CRect> viwerRect;
 		int topLeftX = mClientSize.left;
 		int BottomRightX = mClientSize.left;
