@@ -136,7 +136,6 @@ void CHTMLTurtleDialogDlg::OnPaint()
 	
 
 		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
-
 		// 클라이언트 사각형에서 아이콘을 가운데에 맞춥니다.
 		int cxIcon = GetSystemMetrics(SM_CXICON);
 		int cyIcon = GetSystemMetrics(SM_CYICON);
@@ -150,8 +149,6 @@ void CHTMLTurtleDialogDlg::OnPaint()
 	}
 	else
 	{
-
-
 		mainview.initClientSize();
 		mainview.OnDrew();
 		CDialogEx::OnPaint();

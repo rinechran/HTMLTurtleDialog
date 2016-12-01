@@ -7,51 +7,65 @@
 
 
 
+
+
 class BlockViwer {
 public:
+	BlockViwer() {
+		mBlockArr = {
+			new DoctypeTag ,
+			new HtmlTag,
+			new BodyTag,
+			//new HTag 
+			new DivTag,
+			new OlTag,
+			new UlTag,
+			new LiTag,
+			new ATag,
+			new PTag,
+			new BrTag,
+			new InputTag,
+		};
+
+
+	}
+
+
 	void SetSize(CRect rect) {
 		mBlockSize = rect;
 	}
 	void OnDrew(CClientDC& dc) {
 
+
 		dc.Rectangle(mBlockSize);
 	}
 
 	CRect mBlockSize;
+	std::vector<Block*> mBlockArr;
 };
 class RunViwer {
 public:
 	RunViwer() {
-		a.push_back(Block({ L"IMG",L"IMG HELP"}));
-		a.push_back(Block({ L"SRC",L"SRC HELP" }));
+
 	}
 	void SetSize(CRect rect){
 		mRunSize = rect;
 	}
 	void OnDrew(CClientDC& dc) {
 		dc.Rectangle(mRunSize);
-		a[0].rect.SetRect(mRunSize.left, mRunSize.top, mRunSize.left + 100, mRunSize.top + 100);
-		dc.Rectangle(a[0].rect);
-		a[1].rect.SetRect(mRunSize.left + 100, mRunSize.top + 100, mRunSize.left + 200, mRunSize.top + 200);
-		dc.Rectangle(a[1].rect);
 	}
 
 	Block * OnMouseMove(CPoint &point) {
-		for (auto i = a.begin(); i != a.end(); i++) {
-			if (i->rect.PtInRect(point)) {
-				return &(*i);
-			}
-		}
 		return nullptr;
 	}
 public:
 
-	std::vector<Block> a;
 	CRect mRunSize;
 };
 class MainView
 {
 public:
+
 	MainView(CWnd * wnd,CRect & mClient, HelpView helpView) :
 		mWnd(wnd),
 		mClientSize(mClient),
@@ -72,16 +86,15 @@ public:
 				BottomRightX, mClientSize.top+mClientSize.Height()));
 			topLeftX += cut;
 		}
-		blockViwer.SetSize(viwerRect[0]);
-		runViwer.SetSize(viwerRect[1]);
+		runViwer.SetSize(viwerRect[0]);
+		blockViwer.SetSize(viwerRect[1]);
+	
 	}
 	
 
 	void OnDrew() {
 		CClientDC dc(mWnd);
-
 		blockViwer.OnDrew(dc);
-
 		runViwer.OnDrew(dc);
 
 	}

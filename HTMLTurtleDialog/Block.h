@@ -1,17 +1,23 @@
 #pragma once
+#include <vector>
+
 struct Block
 {
 
 	void setRect(CRect rect) {
 		rect = rect;
 	}
+	int rgb;
 	CString mTag;
 	CString mStartTag;
 	CString mContext;
 	CString mProperty;
 	CString mEndTag;
-	CString mHelp;
-	CRect mRect;
+	CString Help;
+	CRect mMainBlock;
+
+	std::vector<CRect> dynamicBlock;
+	CRect mAddBlock;
 
 
 };
@@ -25,7 +31,7 @@ struct DoctypeTag : public Block
 		mProperty = L"";
 		mContext = "";
 		mEndTag = ">";
-		mHelp = "";
+		Help = "";
 	}
 };
 
@@ -38,7 +44,7 @@ struct HtmlTag : public Block
 		mProperty = L">";
 		mContext = "";
 		mEndTag = "</html>";
-		mHelp = "";
+		Help = "";
 	}
 };
 
@@ -51,7 +57,7 @@ struct HeadTag : public Block
 		mProperty = L">";
 		mContext = "";
 		mEndTag = "</head>";
-		mHelp = "";
+		Help = "";
 	}
 };
 struct BodyTag : public Block
@@ -63,7 +69,7 @@ struct BodyTag : public Block
 		mProperty = L">";
 		mContext = "";
 		mEndTag = "</body>";
-		mHelp = "";
+		Help = "";
 	}
 };
 struct HTag : public Block
@@ -125,7 +131,7 @@ struct DivTag : public Block
 		mProperty = L">";
 		mContext = "";
 		mEndTag = "</div>";
-		mHelp = "";
+		Help = "";
 	}
 };
 
@@ -138,7 +144,7 @@ struct OlTag : public Block
 		mProperty = L">"; 
 		mContext = "";
 		mEndTag = "</ol>";
-		mHelp = "";
+		Help = "";
 	}
 };
 
@@ -151,7 +157,7 @@ struct UlTag : public Block
 		mProperty = L">";
 		mContext = "";
 		mEndTag = "</ul>";
-		mHelp = "";
+		Help = "";
 	}
 };
 
@@ -164,7 +170,7 @@ struct LiTag : public Block
 		mProperty = L">";
 		mContext = "";
 		mEndTag = "</p>";
-		mHelp = "";
+		Help = "";
 	}
 };
 
@@ -177,7 +183,7 @@ struct ATag : public Block
 		mProperty = L">";
 		mContext = "";
 		mEndTag = "</a>";
-		mHelp = "";
+		Help = "";
 	}
 };
 
@@ -190,7 +196,7 @@ struct PTag : public Block
 		mProperty = L">";
 		mContext = "";
 		mEndTag = "</p>";
-		mHelp = "";
+		Help = "";
 	}
 };
 struct BrTag : public Block
@@ -202,7 +208,7 @@ struct BrTag : public Block
 		mProperty = L"/>";
 		mContext = "";
 		mEndTag = "";
-		mHelp = "";
+		Help = "";
 	}
 };
 
@@ -215,7 +221,7 @@ struct InputTag : public Block
 		mProperty = L"";
 		mContext = "";
 		mEndTag = ">";
-		mHelp = "";
+		Help = "";
 	}
 };
 
@@ -228,7 +234,7 @@ struct ImgTag : public Block
 		mProperty = L"";
 		mContext = "";
 		mEndTag = "/>";
-		mHelp = "";
+		Help = "";
 	}
 };
 
@@ -241,7 +247,7 @@ struct TableTag : public Block
 		mProperty = L">";
 		mContext = "";
 		mEndTag = "</table>";
-		mHelp = "";
+		Help = "";
 	}
 };
 
@@ -254,7 +260,7 @@ struct TrTag : public Block
 		mProperty = L">";
 		mContext = "";
 		mEndTag = "</tr>";
-		mHelp = "";
+		Help = "";
 	}
 };
 
@@ -267,7 +273,7 @@ struct ThTag : public Block
 		mProperty = L">";
 		mContext = "";
 		mEndTag = "</th>";
-		mHelp = "";
+		Help = "";
 	}
 };
 
@@ -280,7 +286,7 @@ struct TdTag : public Block
 		mProperty = L">";
 		mContext = "";
 		mEndTag = "</td>";
-		mHelp = "";
+		Help = "";
 	}
 };
 

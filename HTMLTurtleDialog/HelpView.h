@@ -20,7 +20,7 @@ public:
 		setTag(Tag);
 	}
 	void SetHelper(Block & block) {
-		setExplan(block.Tag);
+		setExplan(block.mTag);
 		setTag(block.Help);
 	}
 
