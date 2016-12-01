@@ -16,8 +16,12 @@ public:
 			new DoctypeTag ,
 			new HtmlTag,
 			new BodyTag,
-			//new HTag 
 			new DivTag,
+			new HTag(1),
+			new HTag(2),
+			new HTag(3),
+			new HTag(4),
+			new HTag(5),
 			new OlTag,
 			new UlTag,
 			new LiTag,
@@ -35,9 +39,22 @@ public:
 		mBlockSize = rect;
 	}
 	void OnDrew(CClientDC& dc) {
-
-
+		//100 50
 		dc.Rectangle(mBlockSize);
+		int x = 0;
+		int y = 0;
+		int maxCount = (mBlockSize.Height()/50);
+		for (int i = 0;i < mBlockArr.size(); i++)
+		{
+			if (i%(maxCount) == 0&&i!=0)
+			{
+				x += 101;
+				y = 0;
+			}
+			dc.Rectangle(mBlockSize.left+x, mBlockSize.top+y, mBlockSize.left+x+100 , mBlockSize.top+y+50);
+			y += 51;
+		}
+		
 	}
 
 	CRect mBlockSize;
@@ -73,9 +90,9 @@ public:
 	}
 
 	void initClientSize() {
-
 		mWnd->GetDlgItem(IDC_RUN_ANI)->GetWindowRect(&mClientSize);
 		mWnd->ScreenToClient(&mClientSize);
+
 		std::vector<CRect> viwerRect;
 		int topLeftX = mClientSize.left;
 		int BottomRightX = mClientSize.left;
