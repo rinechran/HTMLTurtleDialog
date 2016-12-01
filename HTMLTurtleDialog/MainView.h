@@ -58,7 +58,7 @@ public:
 	}
 	void OnDrew(CClientDC& dc) {
 		//100 50
-		initBlock();
+
 		dc.Rectangle(mBlockSize);
 		for (int i = 0; i < mBlockArr.size(); i++)
 		{
@@ -99,7 +99,11 @@ public:
 		mClientSize(mClient),
 		mHelpView(helpView) {
 	}
-
+	void init() {
+		initClientSize();
+		blockViwer.initBlock();
+		
+	}
 	void initClientSize() {
 		mWnd->GetDlgItem(IDC_RUN_ANI)->GetWindowRect(&mClientSize);
 		mWnd->ScreenToClient(&mClientSize);
