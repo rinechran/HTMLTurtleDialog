@@ -38,26 +38,33 @@ public:
 	void SetSize(CRect rect) {
 		mBlockSize = rect;
 	}
-	void OnDrew(CClientDC& dc) {
-		//100 50
-		dc.Rectangle(mBlockSize);
+
+	void initBlock() {
 		int x = 0;
 		int y = 0;
-		int maxCount = (mBlockSize.Height()/50);
-		for (int i = 0;i < mBlockArr.size(); i++)
+		int maxCount = (mBlockSize.Height() / 50);
+		for (int i = 0; i < mBlockArr.size(); i++)
 		{
-			if (i%(maxCount) == 0&&i!=0)
+			if (i % (maxCount) == 0 && i != 0)
 			{
 				x += 101;
 				y = 0;
 			}
 			CRect rect(mBlockSize.left + x, mBlockSize.top + y, mBlockSize.left + x + 100, mBlockSize.top + y + 50);
 			mBlockArr[i]->setRect(rect);
-			dc.Rectangle(mBlockArr[i]->mMainBlock);
-			dc.DrawText(mBlockArr[i]->mTag, -1, &(mBlockArr[i]->mMainBlock), DT_SINGLELINE | DT_CENTER |DT_VCENTER);
+		
 			y += 51;
 		}
-		
+	}
+	void OnDrew(CClientDC& dc) {
+		//100 50
+		initBlock();
+		dc.Rectangle(mBlockSize);
+		for (int i = 0; i < mBlockArr.size(); i++)
+		{
+			dc.Rectangle(mBlockArr[i]->mMainBlock);
+			dc.DrawText(mBlockArr[i]->mTag, -1, &(mBlockArr[i]->mMainBlock), DT_SINGLELINE | DT_CENTER | DT_VCENTER);
+		}
 	}
 
 	CRect mBlockSize;
@@ -82,6 +89,7 @@ public:
 
 	CRect mRunSize;
 };
+
 class MainView
 {
 public:

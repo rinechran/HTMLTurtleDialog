@@ -6,6 +6,7 @@ struct Block
 
 	void setRect(CRect rect) {
 		mMainBlock = rect;
+
 	}
 	int rgb;
 	CString mTag;
@@ -15,8 +16,8 @@ struct Block
 	CString mEndTag;
 	CString Help;
 	CRect mMainBlock;
-
-	std::vector<CRect> dynamicBlock;
+	CRect dynamicBlock;
+	//std::vector<CRect> dynamicBlock ;
 	CRect mAddBlock;
 
 
@@ -76,7 +77,7 @@ struct HTag : public Block
 {
 	HTag(int select)
 	{
-		Help="한글로 일관된 설명 가능 ex:h태그는 h1,h2,h3,h4,h5순으로 큰 폰트사이즈로 제목을나타내주는 태그이다";
+		Help = "한글로 일관된 설명 가능 ex:h태그는 h1,h2,h3,h4,h5순으로 큰 폰트사이즈로 제목을나타내주는 태그이다";
 		switch (select)
 		{
 		case 1:
