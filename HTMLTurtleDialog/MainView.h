@@ -51,7 +51,10 @@ public:
 				x += 101;
 				y = 0;
 			}
-			dc.Rectangle(mBlockSize.left+x, mBlockSize.top+y, mBlockSize.left+x+100 , mBlockSize.top+y+50);
+			CRect rect(mBlockSize.left + x, mBlockSize.top + y, mBlockSize.left + x + 100, mBlockSize.top + y + 50);
+			mBlockArr[i]->setRect(rect);
+			dc.Rectangle(mBlockArr[i]->mMainBlock);
+			dc.DrawText(mBlockArr[i]->mTag, -1, &(mBlockArr[i]->mMainBlock), DT_SINGLELINE | DT_CENTER |DT_VCENTER);
 			y += 51;
 		}
 		
