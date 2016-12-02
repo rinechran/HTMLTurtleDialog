@@ -1,9 +1,19 @@
 #pragma once
 #include <vector>
+#include "Mshape.hpp"
+#include <random>
 //각 help에 나타내주는 상자 크기에 맞춰 개행문자를 넣어줘야합니다. \r\n으로 (추후작업예정)
 struct Block
 {
-	
+	Block() {
+		std::random_device rd;
+		std::mt19937 dg(rd());
+		std::uniform_int_distribution<> un(0, 255);
+		int R = un(dg);
+		int G = un(dg);
+		int B = un(dg);
+		rgb.setColor(R,G,B);
+	}
 	void setRect(CRect rect) {
 		//첫번째 블럭
 		mMainBlock = rect;
@@ -14,7 +24,18 @@ struct Block
 		dynamicBlock = mMainBlock;
 		dynamicBlock.MoveToY(102);//y좌표만 이동
 	}
-	int rgb;
+	template <typename T>
+	void OnDrew(T & dc) {
+		CBrush * oldBrush, newBrush;
+		newBrush.CreateSolidBrush(rgb);
+		oldBrush = dc.SelectObject(&newBrush);
+		dc.Rectangle(mMainBlock);
+		dc.DrawText(mTag, -1, &mMainBlock, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
+
+		dc.SelectObject(oldBrush);
+
+	}
+
 	CString mTag;
 	CString mStartTag;
 	CString mContext;
@@ -25,7 +46,7 @@ struct Block
 	CRect dynamicBlock;
 	//std::vector<CRect> dynamicBlock ;
 	CRect mAddBlock;
-
+	EunMfc::RGB rgb;
 
 };
 

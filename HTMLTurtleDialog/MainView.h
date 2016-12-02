@@ -37,6 +37,15 @@ public:
 
 	}
 
+	Block * OnMouseMove(CPoint &point) {
+		for (auto i = mBlockArr.begin(); i < mBlockArr.end(); i++)
+		{
+			if ((*i)->mMainBlock.PtInRect(point))
+				return (*i);
+		}
+		return nullptr;
+
+	}
 
 	void SetSize(CRect rect) {
 		mBlockSize = rect;
@@ -61,13 +70,14 @@ public:
 	}
 	void OnDrew(CClientDC& dc) {
 		//100 50
-
 		dc.Rectangle(mBlockSize);
-		for (int i = 0; i < mBlockArr.size(); i++)
+		for (auto i = mBlockArr.begin(); i < mBlockArr.end(); i++)
 		{
-			dc.Rectangle(mBlockArr[i]->mMainBlock);
-			dc.DrawText(mBlockArr[i]->mTag, -1, &(mBlockArr[i]->mMainBlock), DT_SINGLELINE | DT_CENTER | DT_VCENTER);
+			(*i)->OnDrew(dc);
+			
 		}
+
+		
 	}
 
 	CRect mBlockSize;
@@ -131,7 +141,10 @@ public:
 		CClientDC dc(mWnd);
 		blockViwer.OnDrew(dc);
 		runViwer.OnDrew(dc);
+		
 
+
+		
 	}
 
 
@@ -140,7 +153,7 @@ public:
 		mHelpView.SetHelper(Tag, Explan);
 		mWnd->UpdateData(false);
 	}
-	void SetmHelpView(Block Block) {
+	void SetmHelpView(Block &Block) {
 		mWnd->UpdateData(true);
 		mHelpView.SetHelper(Block);
 		mWnd->UpdateData(false);
@@ -152,10 +165,10 @@ public:
 	}
 
 	void OnMouseMove(CPoint &point) {
-		Block * rect = runViwer.OnMouseMove(point);
+		Block * rect = blockViwer.OnMouseMove(point);
 		if (rect)
 			SetmHelpView(*rect);
-
+		
 	}
 
 	~MainView() {}
