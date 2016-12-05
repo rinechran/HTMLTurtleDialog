@@ -4,8 +4,7 @@
 #include "resource.h"
 #include <vector>
 #include "Block.h"
-
-
+#include "Mouse.h"
 
 
 
@@ -36,7 +35,15 @@ public:
 
 
 	}
-
+	Block * OnLButtonDown(CPoint &point) {
+		for (auto i = mBlockArr.begin(); i < mBlockArr.end(); i++)
+		{
+			if ((*i)->mMainBlock.PtInRect(point)) {
+				return (*i);
+			}
+		}
+		return nullptr;
+	}
 	Block * OnMouseMove(CPoint &point) {
 		for (auto i = mBlockArr.begin(); i < mBlockArr.end(); i++)
 		{
@@ -63,13 +70,14 @@ public:
 				y = 0;
 			}
 			CRect rect(mBlockSize.left + x, mBlockSize.top + y, mBlockSize.left + x + 100, mBlockSize.top + y + 50);
-			mBlockArr[i]->setRect(rect);
+			mBlockArr[i]->initBlock(rect);
 		
 			y += 51;
 		}
+
+
 	}
 	void OnDrew(CClientDC& dc) {
-		//100 50
 		dc.Rectangle(mBlockSize);
 		for (auto i = mBlockArr.begin(); i < mBlockArr.end(); i++)
 		{
@@ -95,8 +103,8 @@ public:
 		dc.Rectangle(mRunSize);
 	}
 
-	Block * OnMouseMove(CPoint &point) {
-		return nullptr;
+	bool OnLButtonUp(CPoint &point) {
+		mRunSize.PtInRect(point);
 	}
 public:
 
@@ -141,9 +149,8 @@ public:
 		CClientDC dc(mWnd);
 		blockViwer.OnDrew(dc);
 		runViwer.OnDrew(dc);
+
 		
-
-
 		
 	}
 
@@ -159,8 +166,21 @@ public:
 		mWnd->UpdateData(false);
 	}
 
-	void OnLButtonDown(CPoint &point) {
 
+
+	void OnLButtonDown(CPoint &point) {
+		Block * rect = blockViwer.OnLButtonDown(point);
+		if (rect) {
+			temp = *rect;
+			mouse.SetLbutton();
+		}
+
+	}
+	void OnLButtonUp(CPoint &point) {
+		if (runViwer.OnLButtonUp(point)) {
+			mouse.SetLbutton();
+		}
+		
 
 	}
 
@@ -168,20 +188,21 @@ public:
 		Block * rect = blockViwer.OnMouseMove(point);
 		if (rect)
 			SetmHelpView(*rect);
-		
+
 	}
+
+
 
 	~MainView() {}
 
-
-	
-
-
 	CRect &mClientSize;
+
+	Block temp; //오른쪽마우스 클릭...
 ///
 	CWnd * mWnd;
 	HelpView mHelpView;
 	RunViwer runViwer;
 	BlockViwer blockViwer;
+	Mouse mouse;
 };
 

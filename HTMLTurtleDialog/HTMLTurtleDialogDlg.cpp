@@ -71,6 +71,7 @@ BEGIN_MESSAGE_MAP(CHTMLTurtleDialogDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_MOUSEMOVE()
+	ON_WM_LBUTTONUP()
 END_MESSAGE_MAP()
 
 
@@ -182,4 +183,12 @@ void CHTMLTurtleDialogDlg::OnMouseMove(UINT nFlags, CPoint point)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	mainview.OnMouseMove(point);
 	CDialogEx::OnMouseMove(nFlags, point);
+}
+
+
+void CHTMLTurtleDialogDlg::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CDialogEx::OnLButtonUp(nFlags, point);
 }

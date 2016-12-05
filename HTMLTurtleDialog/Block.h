@@ -13,16 +13,11 @@ struct Block
 		int G = un(dg);
 		int B = un(dg);
 		rgb.setColor(R,G,B);
+		//dynamicBlock.push_back(Block());
 	}
-	void setRect(CRect rect) {
-		//첫번째 블럭
+	void initBlock(CRect rect) {
 		mMainBlock = rect;
-		//두번쨰 블럭
-		mAddBlock = mMainBlock;
-		mAddBlock.MoveToXY(50,51);//xy좌표 이동 ,파라미터 각각 x,y좌표에 영향줌
-		//마지막 블럭
-		dynamicBlock = mMainBlock;
-		dynamicBlock.MoveToY(102);//y좌표만 이동
+		//dynamicBlock[0]
 	}
 	template <typename T>
 	void OnDrew(T & dc) {
@@ -31,10 +26,12 @@ struct Block
 		oldBrush = dc.SelectObject(&newBrush);
 		dc.Rectangle(mMainBlock);
 		dc.DrawText(mTag, -1, &mMainBlock, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
-
 		dc.SelectObject(oldBrush);
-
 	}
+
+
+	using DynamicBlock = std::vector<Block>;
+
 
 	CString mTag;
 	CString mStartTag;
@@ -43,8 +40,7 @@ struct Block
 	CString mEndTag;
 	CString Help;
 	CRect mMainBlock;
-	CRect dynamicBlock;
-	//std::vector<CRect> dynamicBlock ;
+	DynamicBlock dynamicBlock;
 	CRect mAddBlock;
 	EunMfc::RGB rgb;
 
