@@ -25,13 +25,13 @@ struct Block
 		newBrush.CreateSolidBrush(rgb);
 		oldBrush = dc.SelectObject(&newBrush);
 		dc.Rectangle(mMainBlock);
+		dc.SetBkMode(TRANSPARENT);
 		dc.DrawText(mTag, -1, &mMainBlock, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
 		dc.SelectObject(oldBrush);
 	}
 
 
 	using DynamicBlock = std::vector<Block>;
-
 
 	CString mTag;
 	CString mStartTag;
@@ -187,7 +187,7 @@ struct OlTag : public Block
 		mProperty = L">"; 
 		mContext = "";
 		mEndTag = "</ol>";
-		Help = "";
+		Help = L"<ol>태그는  ordered list 의 약자로써 \r\n리스트들에게 순서대로 숫자를 붙여서 표현 하게됩니다 \r\nEx:\r\n <ol>\r\n   <li>사과</li>\r\n   <li>배</li>\r\n   <li>포도</li>\r\n</ol>\r\n\r\n 보여지는화면 :\r\n1.사과\r\n2.배\r\n3.포도";
 	}
 };
 
@@ -200,7 +200,7 @@ struct UlTag : public Block
 		mProperty = L">";
 		mContext = "";
 		mEndTag = "</ul>";
-		Help = "";
+		Help = L"<ul>태그는 unordered list의 약자로써 정렬되지않은 목록을 정의합니다";
 	}
 };
 
@@ -213,7 +213,7 @@ struct LiTag : public Block
 		mProperty = L">";
 		mContext = "";
 		mEndTag = "</p>";
-		Help = "";
+		Help = L"list의 약자로써 목록 항목을을 정의합니다\r\n상위태그로 <ul> or <ol>태그와 함께 사용됩니다";
 	}
 };
 
@@ -226,7 +226,7 @@ struct ATag : public Block
 		mProperty = L">";
 		mContext = "";
 		mEndTag = "</a>";
-		Help = "";
+		Help = L"<a>태그는 anchor의 약자로\r\n herf속성에 적힌 주소로 연결된페이지로 이동하는 하이퍼링크를 걸어줍니다.";
 	}
 };
 
@@ -239,7 +239,7 @@ struct PTag : public Block
 		mProperty = L">";
 		mContext = "";
 		mEndTag = "</p>";
-		Help = "";
+		Help = L"<p>태그는 paragraph의 약자로 문단을 정의합니다.\r\n p태그는 브라우저가 태그전에 여백을 추가로 줍니다.";
 	}
 };
 struct BrTag : public Block
@@ -251,7 +251,7 @@ struct BrTag : public Block
 		mProperty = L"/>";
 		mContext = "";
 		mEndTag = "";
-		Help = "";
+		Help = L"<br>태그는 줄바꿈을 시행해주는 역활을 합니다";
 	}
 };
 
@@ -264,7 +264,7 @@ struct InputTag : public Block
 		mProperty = L"";
 		mContext = "";
 		mEndTag = ">";
-		Help = "";
+		Help = L"데이터를 입력해주는 역활을 합니다 \r\n속성에 따라 다양한 버튼 주소, 날짜, 전화번호 등등 다양한 데이터 형식을 입력하게 합니다";
 	}
 };
 
@@ -277,7 +277,7 @@ struct ImgTag : public Block
 		mProperty = L"";
 		mContext = "";
 		mEndTag = "/>";
-		Help = "";
+		Help = L"이미지를 삽입시켜주는 태그입니다\r\n src속성을 이용하여 속성의 경로에 있는 이미지를 보여줍니다.";
 	}
 };
 
@@ -290,7 +290,7 @@ struct TableTag : public Block
 		mProperty = L">";
 		mContext = "";
 		mEndTag = "</table>";
-		Help = "";
+		Help = L"html table을 정의해줍니다(표를 정의해줍니다)\r\n하위요소로 tr,th,td태그를 사용합니다.";
 	}
 };
 
@@ -303,7 +303,7 @@ struct TrTag : public Block
 		mProperty = L">";
 		mContext = "";
 		mEndTag = "</tr>";
-		Help = "";
+		Help = L"<tr> 태그는 표의 row(행)을 정의합니다 하위요소로 td,th를 포함하고 있습니다.";
 	}
 };
 
@@ -316,7 +316,7 @@ struct ThTag : public Block
 		mProperty = L">";
 		mContext = "";
 		mEndTag = "</th>";
-		Help = "";
+		Help = L"표의 헤더 셀을 정의합니다 tr과 대부분같으나 제목등의 용도로 진하고 가운데 정렬이 필요한 헤더셀일떄 사용합니다";
 	}
 };
 
@@ -329,6 +329,6 @@ struct TdTag : public Block
 		mProperty = L">";
 		mContext = "";
 		mEndTag = "</td>";
-		Help = "";
+		Help = L"표준 셀을 정의 해줍니다 기본적으로 왼쪽정렬되어있습니다.";
 	}
 };
