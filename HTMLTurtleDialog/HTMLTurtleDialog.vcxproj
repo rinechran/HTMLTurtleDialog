@@ -182,7 +182,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Block.h" />
+    <ClInclude Include="CWebBrowser2.h" />
     <ClInclude Include="HelpView.h" />
+    <ClInclude Include="HtmlDlg.h" />
     <ClInclude Include="HTMLTurtleDialog.h" />
     <ClInclude Include="HTMLTurtleDialogDlg.h" />
     <ClInclude Include="MainView.h" />
@@ -194,7 +196,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="CWebBrowser2.cpp" />
     <ClCompile Include="HelpView.cpp" />
+    <ClCompile Include="HtmlDlg.cpp" />
     <ClCompile Include="HTMLTurtleDialog.cpp" />
     <ClCompile Include="HTMLTurtleDialogDlg.cpp" />
     <ClCompile Include="MainView.cpp" />
@@ -221,7 +225,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties RESOURCE_FILE="HTMLTurtleDialog.rc" />
+      <UserProperties _x007B_8856F961-340A-11D0-A96B-00C04FD705A2_x007D_="CWebBrowser2" RESOURCE_FILE="HTMLTurtleDialog.rc" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

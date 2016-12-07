@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "HTMLTurtleDialog.h"
 #include "HTMLTurtleDialogDlg.h"
+#include "CWebBrowser2.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -37,7 +38,7 @@ CHTMLTurtleDialogApp theApp;
 BOOL CHTMLTurtleDialogApp::InitInstance()
 {
 	CWinApp::InitInstance();
-
+	AfxEnableControlContainer();
 
 	// 대화 상자에 셸 트리 뷰 또는
 	// 셸 목록 뷰 컨트롤이 포함되어 있는 경우 셸 관리자를 만듭니다.

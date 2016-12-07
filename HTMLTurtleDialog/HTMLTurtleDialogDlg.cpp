@@ -6,7 +6,7 @@
 #include "HTMLTurtleDialog.h"
 #include "HTMLTurtleDialogDlg.h"
 #include "afxdialogex.h"
-
+#include "HtmlDlg.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -72,6 +72,7 @@ BEGIN_MESSAGE_MAP(CHTMLTurtleDialogDlg, CDialogEx)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_MOUSEMOVE()
 	ON_WM_LBUTTONUP()
+	ON_BN_CLICKED(BUTTON_COMPLETE, &CHTMLTurtleDialogDlg::OnBnClickedComplete)
 END_MESSAGE_MAP()
 
 
@@ -107,8 +108,8 @@ BOOL CHTMLTurtleDialogDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
-
-
+	
+	
 	mainview.init();
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
@@ -191,4 +192,12 @@ void CHTMLTurtleDialogDlg::OnLButtonUp(UINT nFlags, CPoint point)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
 	CDialogEx::OnLButtonUp(nFlags, point);
+}
+
+
+void CHTMLTurtleDialogDlg::OnBnClickedComplete()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CHtmlDlg htmlDlg;
+	htmlDlg.DoModal();
 }
