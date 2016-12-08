@@ -6,7 +6,8 @@
 #include "Block.h"
 #include "Mouse.h"
 #include "BlockViwer.h"
-
+#include "CustomDC.h"
+#include <algorithm>
 
 class RunViwer {
 public:
@@ -25,7 +26,8 @@ public:
 	void SetSize(CRect rect) {
 		mRunSize = rect;
 	}
-	void OnDrew(CClientDC& dc) {
+	template <typename T>
+	void OnDrew(T& dc) {
 		dc.Rectangle(mRunSize);
 		for (auto i = runBlock.begin(); i != runBlock.end(); ++i) {
 			i->OnDrew(dc);
@@ -36,24 +38,45 @@ public:
 
 	}
 
-	Block recursiveSerce(std::vector<Block> reBlock) {
-
+	Block recursiveSearch(std::vector<Block> &recur,CPoint &point, Block temp) {
+		if (runBlock[runBlock.size() - 1].dynamicBlock.size() == 0) {
+			
+		}
 	}
 
-	CString getString() {
+	CString&& getStringHtml() {
+		CString str;
+		for (auto i = runBlock.begin(); i != runBlock.end(); ++i) {
+			str += i->mStartTag + L"\n";
+			for (auto j = (*i).dynamicBlock.begin(); j != (*i).dynamicBlock.end(); j++) {
+				
+			}
+		}
 
 	}
+	std::vector<Block>* blockPush(CPoint &point, Block temp) {
 
-	std::vector<Block>* OnLButtonUp(CPoint &point, Block temp) {
-		if (runBlock[runBlock.size() - 1].leftRect.PtInRect(point)) { //왼쪽지점..
-			temp.BlockMoveXY(runBlock[runBlock.size() - 1].leftRect.TopLeft());
+		auto &endBlock = runBlock[runBlock.size() - 1];
+
+		if (endBlock.leftRect.PtInRect(point)) { //왼쪽지점..
+			temp.BlockMoveXY(endBlock.leftRect.TopLeft());
 			runBlock.push_back(temp);
 		}
-		if (runBlock[runBlock.size() - 1].rightRect.PtInRect(point)) { //오른쪽 지점.
-			temp.BlockMoveXY(runBlock[runBlock.size() - 1].rightRect.TopLeft());
-			runBlock[runBlock.size() - 1].LeftRectPush();
-			runBlock[runBlock.size() - 1].dynamicBlock.push_back(temp);
+		else if (endBlock.dynamicBlock.size() != 0) { //오른쪽의 마지막...
+			auto i = endBlock.dynamicBlock[endBlock.dynamicBlock.size() - 1];
+			if (i.leftRect.PtInRect(point)) { //왼쪽지점..
+				temp.BlockMoveXY(i.leftRect.TopLeft());
+				endBlock.LeftRectPush();
+				endBlock.dynamicBlock.push_back(temp);
+			}
 		}
+		else if (endBlock.rightRect.PtInRect(point)) { //오른쪽 지점.
+			temp.BlockMoveXY(endBlock.rightRect.TopLeft());
+			endBlock.LeftRectPush();
+			endBlock.dynamicBlock.push_back(temp);
+		}
+
+
 		return false;
 	}
 public:
@@ -102,6 +125,8 @@ public:
 
 	void OnDrew() {
 		CClientDC dc(mWnd);
+		//CMemDC Cdc(dc, mWnd);
+		//CCustomDC cdc(&dc);
 		blockViwer.OnDrew(dc);
 		runViwer.OnDrew(dc);
 
@@ -128,16 +153,17 @@ public:
 		Block * rect = blockViwer.OnLButtonDown(point);
 		if (rect) {
 			temp = *rect;
-			mouse.SetLbutton();
+			mouse.SetLbutton(true);
 		}
 
 	}
 	void OnLButtonUp(CPoint &point) {
-		if (runViwer.OnLButtonUp(point, temp)) {
-			//블록 추가..
+		if (mouse.getLbutton()) {
+			runViwer.blockPush(point, temp);
+			temp = Block();
 		}
-		mouse.SetLbutton();
-		mWnd->Invalidate();
+		mouse.SetLbutton(false);
+
 	}
 
 	void OnMouseMove(CPoint &point) {
@@ -146,11 +172,19 @@ public:
 		if (rect)
 			SetmHelpView(*rect);
 
+		
+		if (mouse.getLbutton()){
+			if (mClientSize.PtInRect(point)) {
+				temp.BlockMoveXY(point);
 
-		if (mouse.getLbutton()) {
-			temp.BlockMoveXY(point);
-			mWnd->Invalidate();
+			}
+			else {
+				mouse.SetLbutton(false);
+				temp = Block();
+			}
 		}
+	
+		
 
 	}
 

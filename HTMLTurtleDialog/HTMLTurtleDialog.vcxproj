@@ -183,6 +183,7 @@
   <ItemGroup>
     <ClInclude Include="Block.h" />
     <ClInclude Include="BlockViwer.h" />
+    <ClInclude Include="CustomDC.h" />
     <ClInclude Include="CWebBrowser2.h" />
     <ClInclude Include="HelpView.h" />
     <ClInclude Include="HtmlDlg.h" />
@@ -198,6 +199,7 @@
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BlockViwer.cpp" />
+    <ClCompile Include="CustomDC.cpp" />
     <ClCompile Include="CWebBrowser2.cpp" />
     <ClCompile Include="HelpView.cpp" />
     <ClCompile Include="HtmlDlg.cpp" />

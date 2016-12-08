@@ -50,11 +50,21 @@ struct Block
 		//rightRect.MoveToXY();
 	}
 	void LeftRectPush() {
-
 		leftRect.MoveToY(leftRect.top + 50);
 		//rightRect.MoveToXY();
 	}
-
+	void RightRectPush() {
+		rightRect.MoveToY(rightRect.top + 50);
+		//rightRect.MoveToXY();
+	}
+	void LeftRectPop() {
+		leftRect.MoveToY(leftRect.top + 50);
+		//rightRect.MoveToXY();
+	}
+	void RightRectPop() {
+		rightRect.MoveToY(rightRect.top + 50);
+		//rightRect.MoveToXY();
+	}
 
 	using DynamicBlock = std::vector<Block>;
 

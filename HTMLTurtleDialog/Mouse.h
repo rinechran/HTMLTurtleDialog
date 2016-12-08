@@ -7,7 +7,8 @@ public:
 	bool getRbutton();
 	void SetRbutton();
 	void SetLbutton();
-
+	void SetRbutton(bool);
+	void SetLbutton(bool);
 
 private:
 

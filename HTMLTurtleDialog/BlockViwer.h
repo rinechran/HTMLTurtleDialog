@@ -70,7 +70,8 @@ public:
 
 
 	}
-	void OnDrew(CClientDC& dc) {
+	template <typename T>
+	void OnDrew(T& dc) {
 		dc.Rectangle(mBlockSize);
 		for (auto i = mBlockArr.begin(); i < mBlockArr.end(); i++)
 		{

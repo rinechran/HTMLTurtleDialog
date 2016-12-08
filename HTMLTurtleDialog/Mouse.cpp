@@ -14,9 +14,19 @@ bool Mouse::getRbutton() {
  }
 
 void Mouse::SetRbutton() {
-	 mIsLbutton = mIsLbutton == false ? true : false;
+	mIsRbutton = mIsRbutton == false ? true : false;
  }
 
 void Mouse::SetLbutton() {
-	 mIsRbutton = mIsRbutton == false ? true : false;
+	 mIsLbutton = mIsLbutton == false ? true : false;
  }
+
+void Mouse::SetRbutton(bool condition)
+{ 
+	mIsRbutton = condition;
+}
+
+void Mouse::SetLbutton(bool condition)
+{
+	mIsLbutton = condition;
+}
