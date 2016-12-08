@@ -5,117 +5,69 @@
 #include <vector>
 #include "Block.h"
 #include "Mouse.h"
+#include "BlockViwer.h"
 
 
-
-class BlockViwer {
-public:
-	BlockViwer() {
-		mBlockArr = {
-			new DoctypeTag ,
-			new HtmlTag,
-			new HeadTag,
-			new TitleTag,
-			new BodyTag,
-			new DivTag,
-			new HTag(1),
-			new HTag(2),
-			new HTag(3),
-			new HTag(4),
-			new HTag(5),
-			new HTag(6),
-			new OlTag,
-			new UlTag,
-			new LiTag,
-			new ATag,
-			new PTag,
-			new BrTag,
-			new InputTag,
-		};
-
-
-	}
-	Block * OnLButtonDown(CPoint &point) {
-		for (auto i = mBlockArr.begin(); i < mBlockArr.end(); i++)
-		{
-			if ((*i)->mMainBlock.PtInRect(point)) {
-				return (*i);
-			}
-		}
-		return nullptr;
-	}
-	Block * OnMouseMove(CPoint &point) {
-		for (auto i = mBlockArr.begin(); i < mBlockArr.end(); i++)
-		{
-			if ((*i)->mMainBlock.PtInRect(point))
-				return (*i);
-		}
-		return nullptr;
-
-	}
-
-	void SetSize(CRect rect) {
-		mBlockSize = rect;
-	}
-
-	void initBlock() {
-		int x = 0;
-		int y = 0;
-		int maxCount = (mBlockSize.Height() / 50);
-		for (int i = 0; i < mBlockArr.size(); i++)
-		{
-			if (i % (maxCount) == 0 && i != 0)
-			{
-				x += 101;
-				y = 0;
-			}
-			CRect rect(mBlockSize.left + x, mBlockSize.top + y, mBlockSize.left + x + 100, mBlockSize.top + y + 50);
-			mBlockArr[i]->initBlock(rect);
-		
-			y += 51;
-		}
-
-
-	}
-	void OnDrew(CClientDC& dc) {
-		dc.Rectangle(mBlockSize);
-		for (auto i = mBlockArr.begin(); i < mBlockArr.end(); i++)
-		{
-			(*i)->OnDrew(dc);
-			
-		}
-
-		
-	}
-
-	CRect mBlockSize;
-	std::vector<Block*> mBlockArr;
-};
 class RunViwer {
 public:
 	RunViwer() {
-
+		runBlock = { EnrtyBlcok() };
 	}
-	void SetSize(CRect rect){
+
+	void initRunViwer() {
+		runBlock[0].initBlock(
+			CRect(
+				mRunSize.left, mRunSize.top,
+				mRunSize.left + 100, mRunSize.top + 50
+			)
+		);
+	}
+	void SetSize(CRect rect) {
 		mRunSize = rect;
 	}
 	void OnDrew(CClientDC& dc) {
 		dc.Rectangle(mRunSize);
+		for (auto i = runBlock.begin(); i != runBlock.end(); ++i) {
+			i->OnDrew(dc);
+			for (auto j = (*i).dynamicBlock.begin(); j != (*i).dynamicBlock.end(); j++) {
+				j->OnDrew(dc);
+			}
+		}
+
 	}
 
-	bool OnLButtonUp(CPoint &point) {
-		mRunSize.PtInRect(point);
+	Block recursiveSerce(std::vector<Block> reBlock) {
+
+	}
+
+	CString getString() {
+
+	}
+
+	std::vector<Block>* OnLButtonUp(CPoint &point, Block temp) {
+		if (runBlock[runBlock.size() - 1].leftRect.PtInRect(point)) { //왼쪽지점..
+			temp.BlockMoveXY(runBlock[runBlock.size() - 1].leftRect.TopLeft());
+			runBlock.push_back(temp);
+		}
+		if (runBlock[runBlock.size() - 1].rightRect.PtInRect(point)) { //오른쪽 지점.
+			temp.BlockMoveXY(runBlock[runBlock.size() - 1].rightRect.TopLeft());
+			runBlock[runBlock.size() - 1].LeftRectPush();
+			runBlock[runBlock.size() - 1].dynamicBlock.push_back(temp);
+		}
+		return false;
 	}
 public:
 
+	std::vector<Block> runBlock;
 	CRect mRunSize;
 };
+
 
 class MainView
 {
 public:
 
-	MainView(CWnd * wnd,CRect & mClient, HelpView helpView) :
+	MainView(CWnd * wnd, CRect & mClient, HelpView helpView) :
 		mWnd(wnd),
 		mClientSize(mClient),
 		mHelpView(helpView) {
@@ -123,7 +75,8 @@ public:
 	void init() {
 		initClientSize();
 		blockViwer.initBlock();
-		
+		runViwer.initRunViwer();
+
 	}
 	void initClientSize() {
 		mWnd->GetDlgItem(IDC_RUN_ANI)->GetWindowRect(&mClientSize);
@@ -135,23 +88,26 @@ public:
 		unsigned int cut = mClientSize.Width() / 2;
 		for (auto i = 0; i < 2; ++i) {
 			BottomRightX += cut;
-			viwerRect.push_back(CRect(topLeftX, mClientSize.top, 
-				BottomRightX, mClientSize.top+mClientSize.Height()));
+			viwerRect.push_back(CRect(topLeftX, mClientSize.top,
+				BottomRightX, mClientSize.top + mClientSize.Height()));
 			topLeftX += cut;
 		}
 		runViwer.SetSize(viwerRect[0]);
 		blockViwer.SetSize(viwerRect[1]);
-	
+
+
+
 	}
-	
+
 
 	void OnDrew() {
 		CClientDC dc(mWnd);
 		blockViwer.OnDrew(dc);
 		runViwer.OnDrew(dc);
 
-		
-		
+		if (mouse.getLbutton())
+			temp.OnDrew(dc);
+
 	}
 
 
@@ -177,17 +133,24 @@ public:
 
 	}
 	void OnLButtonUp(CPoint &point) {
-		if (runViwer.OnLButtonUp(point)) {
-			mouse.SetLbutton();
+		if (runViwer.OnLButtonUp(point, temp)) {
+			//블록 추가..
 		}
-		
-
+		mouse.SetLbutton();
+		mWnd->Invalidate();
 	}
 
 	void OnMouseMove(CPoint &point) {
-		Block * rect = blockViwer.OnMouseMove(point);
+
+		Block * rect = blockViwer.OnMouseMove(point); // 마우스 이동시..
 		if (rect)
 			SetmHelpView(*rect);
+
+
+		if (mouse.getLbutton()) {
+			temp.BlockMoveXY(point);
+			mWnd->Invalidate();
+		}
 
 	}
 
@@ -198,7 +161,7 @@ public:
 	CRect &mClientSize;
 
 	Block temp; //오른쪽마우스 클릭...
-///
+				///
 	CWnd * mWnd;
 	HelpView mHelpView;
 	RunViwer runViwer;

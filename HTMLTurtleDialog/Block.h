@@ -12,12 +12,25 @@ struct Block
 		int R = un(dg);
 		int G = un(dg);
 		int B = un(dg);
-		rgb.setColor(R,G,B);
-		//dynamicBlock.push_back(Block());
+		rgb.setColor(R, G, B);
+
 	}
 	void initBlock(CRect rect) {
 		mMainBlock = rect;
-		//dynamicBlock[0]
+		leftRect.SetRect(
+			rect.left,
+			rect.top + 50,
+			rect.right - 50,
+			rect.bottom + 50
+		);
+
+		rightRect.SetRect(
+			rect.right - 50,
+			rect.bottom,
+			rect.right,
+			rect.bottom + 50
+		);
+
 	}
 	template <typename T>
 	void OnDrew(T & dc) {
@@ -30,6 +43,18 @@ struct Block
 		dc.SelectObject(oldBrush);
 	}
 
+	void BlockMoveXY(CPoint &point) {
+		mMainBlock.MoveToXY(point);
+		leftRect.MoveToXY(CPoint(point.x, point.y + 50));
+		rightRect.MoveToXY(CPoint(point.x + 50, point.y + 50));
+		//rightRect.MoveToXY();
+	}
+	void LeftRectPush() {
+
+		leftRect.MoveToY(leftRect.top + 50);
+		//rightRect.MoveToXY();
+	}
+
 
 	using DynamicBlock = std::vector<Block>;
 
@@ -39,13 +64,21 @@ struct Block
 	CString mProperty;
 	CString mEndTag;
 	CString Help;
+	//
 	CRect mMainBlock;
 	DynamicBlock dynamicBlock;
-	CRect mAddBlock;
+	CRect leftRect;
+	CRect rightRect;
 	EunMfc::RGB rgb;
 
 };
-
+struct EnrtyBlcok : public Block
+{
+	EnrtyBlcok()
+	{
+		mTag = L"EnrtyBlcok";
+	}
+};
 struct DoctypeTag : public Block
 {
 	DoctypeTag()
