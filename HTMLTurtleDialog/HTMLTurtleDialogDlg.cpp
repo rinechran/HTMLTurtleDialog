@@ -53,7 +53,8 @@ CHTMLTurtleDialogDlg::CHTMLTurtleDialogDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(IDD_HTMLTURTLEDIALOG_DIALOG, pParent)
 	, mTagExplan(_T(""))
 	, mTag(_T(""))
-	, mainview(this, mClientSize, HelpView(mTagExplan, mTag))
+	, mainview(this, mClientSize, HelpView(mTagExplan, mTag), mRawHtml)
+	, mRawHtml(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -63,6 +64,7 @@ void CHTMLTurtleDialogDlg::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_STATIC_TAGEXPLAN, mTagExplan);
 	DDX_Text(pDX, IDC_STATIC_TAG, mTag);
+	DDX_Text(pDX, IDC_STATIC_RAWHTML, mRawHtml);
 }
 
 BEGIN_MESSAGE_MAP(CHTMLTurtleDialogDlg, CDialogEx)
@@ -74,6 +76,7 @@ BEGIN_MESSAGE_MAP(CHTMLTurtleDialogDlg, CDialogEx)
 	ON_WM_LBUTTONUP()
 	ON_BN_CLICKED(BUTTON_COMPLETE, &CHTMLTurtleDialogDlg::OnBnClickedComplete)
 	ON_WM_TIMER()
+	ON_WM_RBUTTONDOWN()
 END_MESSAGE_MAP()
 
 
@@ -198,6 +201,22 @@ void CHTMLTurtleDialogDlg::OnLButtonUp(UINT nFlags, CPoint point)
 void CHTMLTurtleDialogDlg::OnBnClickedComplete()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CFile wFile;
+	CFileException e;
+	WORD wd = 0xFEFF;   //unicode 식별자
+	CString str = mainview.runViwer.getStringHtml();
+
+	if (wFile.Open(_T("temp.html"), CFile::modeCreate | CFile::modeWrite), &e)
+	{
+		wFile.Write(str, str.GetLength() * sizeof(TCHAR));
+		wFile.Close();
+	}
+	else
+	{
+		e.ReportError();
+	}
+
+	
 	CHtmlDlg htmlDlg;
 	htmlDlg.DoModal();
 }
@@ -208,4 +227,12 @@ void CHTMLTurtleDialogDlg::OnTimer(UINT_PTR nIDEvent)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	Invalidate();
 	CDialogEx::OnTimer(nIDEvent);
+}
+
+
+void CHTMLTurtleDialogDlg::OnRButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	mainview.OnRButtonDown(point);
+	CDialogEx::OnRButtonDown(nFlags, point);
 }

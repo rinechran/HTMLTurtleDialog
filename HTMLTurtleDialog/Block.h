@@ -2,6 +2,7 @@
 #include <vector>
 #include "Mshape.hpp"
 #include <random>
+
 //각 help에 나타내주는 상자 크기에 맞춰 개행문자를 넣어줘야합니다. \r\n으로 (추후작업예정)
 struct Block
 {
@@ -58,11 +59,11 @@ struct Block
 		//rightRect.MoveToXY();
 	}
 	void LeftRectPop() {
-		leftRect.MoveToY(leftRect.top + 50);
+		leftRect.MoveToY(leftRect.top - 50);
 		//rightRect.MoveToXY();
 	}
 	void RightRectPop() {
-		rightRect.MoveToY(rightRect.top + 50);
+		rightRect.MoveToY(rightRect.top - 50);
 		//rightRect.MoveToXY();
 	}
 
@@ -80,13 +81,14 @@ struct Block
 	CRect leftRect;
 	CRect rightRect;
 	EunMfc::RGB rgb;
-
+	//HTMLEdit HtmlEdit;
 };
 struct EnrtyBlcok : public Block
 {
 	EnrtyBlcok()
 	{
 		mTag = L"EnrtyBlcok";
+
 	}
 };
 struct DoctypeTag : public Block
@@ -255,7 +257,7 @@ struct LiTag : public Block
 		mStartTag = L"<li";
 		mProperty = L">";
 		mContext = "";
-		mEndTag = "</p>";
+		mEndTag = "</li>";
 		Help = L"list의 약자로써 목록 항목을을 정의합니다\r\n상위태그로 <ul> or <ol>태그와 함께 사용됩니다";
 	}
 };

@@ -8,92 +8,18 @@
 #include "BlockViwer.h"
 #include "CustomDC.h"
 #include <algorithm>
-
-class RunViwer {
-public:
-	RunViwer() {
-		runBlock = { EnrtyBlcok() };
-	}
-
-	void initRunViwer() {
-		runBlock[0].initBlock(
-			CRect(
-				mRunSize.left, mRunSize.top,
-				mRunSize.left + 100, mRunSize.top + 50
-			)
-		);
-	}
-	void SetSize(CRect rect) {
-		mRunSize = rect;
-	}
-	template <typename T>
-	void OnDrew(T& dc) {
-		dc.Rectangle(mRunSize);
-		for (auto i = runBlock.begin(); i != runBlock.end(); ++i) {
-			i->OnDrew(dc);
-			for (auto j = (*i).dynamicBlock.begin(); j != (*i).dynamicBlock.end(); j++) {
-				j->OnDrew(dc);
-			}
-		}
-
-	}
-
-	Block recursiveSearch(std::vector<Block> &recur,CPoint &point, Block temp) {
-		if (runBlock[runBlock.size() - 1].dynamicBlock.size() == 0) {
-			
-		}
-	}
-
-	CString&& getStringHtml() {
-		CString str;
-		for (auto i = runBlock.begin(); i != runBlock.end(); ++i) {
-			str += i->mStartTag + L"\n";
-			for (auto j = (*i).dynamicBlock.begin(); j != (*i).dynamicBlock.end(); j++) {
-				
-			}
-		}
-
-	}
-	std::vector<Block>* blockPush(CPoint &point, Block temp) {
-
-		auto &endBlock = runBlock[runBlock.size() - 1];
-
-		if (endBlock.leftRect.PtInRect(point)) { //왼쪽지점..
-			temp.BlockMoveXY(endBlock.leftRect.TopLeft());
-			runBlock.push_back(temp);
-		}
-		else if (endBlock.dynamicBlock.size() != 0) { //오른쪽의 마지막...
-			auto i = endBlock.dynamicBlock[endBlock.dynamicBlock.size() - 1];
-			if (i.leftRect.PtInRect(point)) { //왼쪽지점..
-				temp.BlockMoveXY(i.leftRect.TopLeft());
-				endBlock.LeftRectPush();
-				endBlock.dynamicBlock.push_back(temp);
-			}
-		}
-		else if (endBlock.rightRect.PtInRect(point)) { //오른쪽 지점.
-			temp.BlockMoveXY(endBlock.rightRect.TopLeft());
-			endBlock.LeftRectPush();
-			endBlock.dynamicBlock.push_back(temp);
-		}
-
-
-		return false;
-	}
-public:
-
-	std::vector<Block> runBlock;
-	CRect mRunSize;
-};
-
+#include "HTMLEdit.h"
+#include "RunViwer.h"
 
 class MainView
 {
 public:
 
-	MainView(CWnd * wnd, CRect & mClient, HelpView helpView) :
+	MainView(CWnd * wnd, CRect & mClient, HelpView helpView,CString &RawHtml) :
 		mWnd(wnd),
 		mClientSize(mClient),
-		mHelpView(helpView) {
+		mHelpView(helpView),
+		mRawHtml(RawHtml){
 	}
 	void init() {
 		initClientSize();
@@ -118,21 +44,20 @@ public:
 		runViwer.SetSize(viwerRect[0]);
 		blockViwer.SetSize(viwerRect[1]);
 
-
-
 	}
 
 
 	void OnDrew() {
 		CClientDC dc(mWnd);
-		//CMemDC Cdc(dc, mWnd);
-		//CCustomDC cdc(&dc);
 		blockViwer.OnDrew(dc);
 		runViwer.OnDrew(dc);
-
+		
 		if (mouse.getLbutton())
 			temp.OnDrew(dc);
 
+		mWnd->UpdateData(true);
+		mRawHtml = runViwer.getStringHtml();
+		mWnd->UpdateData(false);
 	}
 
 
@@ -147,14 +72,35 @@ public:
 		mWnd->UpdateData(false);
 	}
 
+	void OnRButtonDown(CPoint &point) {
+		runViwer.blockPop(point);
+	}
+
 
 
 	void OnLButtonDown(CPoint &point) {
-		Block * rect = blockViwer.OnLButtonDown(point);
+		Block * rect = blockViwer.OnLButtonDown(point); 
 		if (rect) {
 			temp = *rect;
 			mouse.SetLbutton(true);
 		}
+
+		//처리..
+		rect = runViwer.FindBlock(point);
+		if (rect) {
+			mWnd->UpdateData(true);
+			mHTMLEdit.mTag = rect->mTag;
+			mHTMLEdit.mProperty = rect->mProperty;
+			mHTMLEdit.mContext = rect->mContext;
+			if (mHTMLEdit.DoModal() == IDOK) {
+				rect->mTag = mHTMLEdit.mTag;
+				rect->mProperty = mHTMLEdit.mProperty;
+				rect->mContext = mHTMLEdit.mContext;
+			}
+			mWnd->UpdateData(false);
+		}
+
+
 
 	}
 	void OnLButtonUp(CPoint &point) {
@@ -183,9 +129,6 @@ public:
 				temp = Block();
 			}
 		}
-	
-		
-
 	}
 
 
@@ -195,7 +138,11 @@ public:
 	CRect &mClientSize;
 
 	Block temp; //오른쪽마우스 클릭...
-				///
+	///
+	CString &mRawHtml;
+
+	HTMLEdit mHTMLEdit;
+	//
 	CWnd * mWnd;
 	HelpView mHelpView;
 	RunViwer runViwer;

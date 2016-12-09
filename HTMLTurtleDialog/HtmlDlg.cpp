@@ -42,9 +42,15 @@ END_EVENTSINK_MAP()
 BOOL CHtmlDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
+	TCHAR szTemp[300];
+	::GetModuleFileName(NULL, szTemp, 300);
+	CString path = szTemp;
+	if (0 < path.ReverseFind('\\')) {
+		path = path.Left(path.ReverseFind('\\'));
+	}
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-	CComVariant var(_T("www.naver.com"));
+	CComVariant var(path+ L"\\temp.html");
 	m_url.Navigate2(&var, NULL, NULL, NULL, NULL);
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.

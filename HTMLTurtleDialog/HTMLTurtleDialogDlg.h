@@ -42,7 +42,7 @@ public:
 	CString mTag;
 	CString mTagExplan;
 	CRect mClientSize;
-
+	CString mRawHtml;
 	//
 
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
@@ -50,4 +50,6 @@ public:
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnBnClickedComplete();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+
+	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 };

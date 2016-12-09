@@ -60,6 +60,12 @@
     <ClInclude Include="CustomDC.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="HTMLEdit.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="RunViwer.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HTMLTurtleDialog.cpp">
@@ -96,6 +102,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CustomDC.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="HTMLEdit.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="RunViwer.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
